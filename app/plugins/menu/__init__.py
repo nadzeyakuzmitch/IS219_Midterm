@@ -9,5 +9,7 @@ class MenuCommand(Command):
 
     def execute(self, commands_list):
         logging.info('Displayed menu')
+        print(f'\n---------------\nAvailable commands:\n')
         for command in commands_list:
                 print(f"{command} - {commands_list[command].description()} command")
+        print(f'---------------\n')
