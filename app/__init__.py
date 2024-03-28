@@ -8,8 +8,20 @@ import logging
 import logging.config
 
 class App:
-    def __init__(self):
-        # Constructor
+    def __init__(self): # Constructor
+        load_dotenv()
+        self.settings = self.load_environment_variables()
+        self.settings.setdefault('ENVIRONMENT', 'PRODUCTION')
+        logging.info(f'Environment: {self.get_environment_variable()}')
+        self.command_handler = CommandHandler()
+
+    def load_environment_variables(self):
+        settings = {key: value for key, value in os.environ.items()}
+        logging.info(f'Environment variables loaded.')
+        return settings
+
+    def get_environment_variable(self, env_var: str = 'ENVIRONMENT'):
+        return self.settings.get(env_var, None)
 
     def load_plugins(self):
         # Dynamically load all plugins in the plugins directory
