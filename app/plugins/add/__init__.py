@@ -4,7 +4,10 @@ from app.commands import Command
 
 
 class AddCommand(Command):
-    def execute(self):
+    def description(self):
+        return 'Addition operation'
+
+    def execute(self, commands_list):
         print("\n---------------\nAddition operation (type 'stop' for main menu)\n")
         isWorking = True
         while isWorking:  #REPL Read, Evaluate, Print, Loop

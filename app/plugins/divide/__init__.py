@@ -4,7 +4,10 @@ from app.commands import Command
 
 
 class DivideCommand(Command):
-    def execute(self):
+    def description(self):
+        return 'Division operation'
+
+    def execute(self, commands_list):
         print("\n---------------\nDivision operation (type 'stop' for main menu)\n")
         isWorking = True
         while isWorking:  #REPL Read, Evaluate, Print, Loop

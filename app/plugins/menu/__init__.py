@@ -4,6 +4,10 @@ from app.commands import Command
 
 
 class MenuCommand(Command):
-    def execute(self):
+    def description(self):
+        return 'Display menu'
+
+    def execute(self, commands_list):
         logging.info('Displayed menu')
-        print(f'\n---------------\nAvailable commands:\n\nadd - Addition operation\nsubtract - Subtraction operation\nmultiply - Multiplication operation\ndivide - Division operation\n\nexit - Exit application\n---------------\n')
+        for command in commands_list:
+                print(f"{command} - {commands_list[command].description()} command")

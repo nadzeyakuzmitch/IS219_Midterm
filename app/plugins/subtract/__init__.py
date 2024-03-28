@@ -4,7 +4,10 @@ from app.commands import Command
 
 
 class SubtractCommand(Command):
-    def execute(self):
+    def description(self):
+        return 'Subtraction operation'
+
+    def execute(self, commands_list):
         print("\n---------------\nSubtraction operation (type 'stop' for main menu)\n")
         isWorking = True
         while isWorking:  #REPL Read, Evaluate, Print, Loop

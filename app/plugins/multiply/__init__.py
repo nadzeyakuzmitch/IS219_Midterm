@@ -4,7 +4,10 @@ from app.commands import Command
 
 
 class MultiplyCommand(Command):
-    def execute(self):
+    def description(self):
+        return 'Multiplication operation'
+
+    def execute(self, commands_list):
         print("\n---------------\nMultiplication operation (type 'stop' for main menu)\n")
         isWorking = True
         while isWorking:  #REPL Read, Evaluate, Print, Loop
