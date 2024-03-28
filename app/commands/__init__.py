@@ -6,7 +6,7 @@ class Command(ABC):
         pass
 
     @abstractmethod
-    def execute(self, commands_list):
+    def execute(self, commands_list, local_history):
         pass
 
 class CommandHandler:
@@ -16,7 +16,7 @@ class CommandHandler:
     def register_command(self, command_name: str, command: Command):
         self.commands[command_name] = command
 
-    def execute_command(self, command_name: str):
+    def execute_command(self, command_name: str, local_history):
         """ Look before you leap (LBYL) - Use when its less likely to work
         if command_name in self.commands:
             self.commands[command_name].execute()
@@ -24,9 +24,10 @@ class CommandHandler:
             print(f"No such command: {command_name}")
         """
         """Easier to ask for forgiveness than permission (EAFP) - Use when its going to most likely work"""
-        try:
-            print(f"{command_name}")
-            self.commands[command_name].execute(self.commands)
-        except KeyError:
-            print(f"\n---------------\nNo such command: {command_name}\n---------------\n")
+        self.commands[command_name].execute(self.commands, local_history)
+        # try:
+        #     print(f"{command_name}")
+        #     self.commands[command_name].execute(self.commands, local_history)
+        # except KeyError:
+        #     print(f"\n---------------\nNo such command: {command_name}\n---------------\n")
 

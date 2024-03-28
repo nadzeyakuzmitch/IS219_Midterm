@@ -16,6 +16,7 @@ class App:
         self.settings.setdefault('ENVIRONMENT', 'PRODUCTION')
         logging.info(f'Environment: {self.get_environment_variable()}')
         self.command_handler = CommandHandler()
+        self.local_history = []
 
     def configure_logging(self):
         logging_conf_path = 'logging.conf'
@@ -51,7 +52,7 @@ class App:
         # Register commands here
         self.load_plugins()
         while True:  #REPL Read, Evaluate, Print, Loop
-            self.command_handler.execute_command(input(f'Type operation command or type `menu` for available commands (type `exit` to exit):\n{self.get_environment_variable()} >>> ').strip())
+            self.command_handler.execute_command(input(f'Type operation command or type `menu` for available commands (type `exit` to exit):\n{self.get_environment_variable()} >>> ').strip(), self.local_history)
 
 
 

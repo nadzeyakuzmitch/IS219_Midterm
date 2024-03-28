@@ -7,7 +7,7 @@ class MenuCommand(Command):
     def description(self):
         return 'Display menu'
 
-    def execute(self, commands_list):
+    def execute(self, commands_list, local_history):
         logging.info('Displayed menu')
         print(f'\n---------------\nAvailable commands:\n')
         for command in commands_list:

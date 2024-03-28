@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 from app.commands import Command
 import pandas as pd
 
@@ -8,8 +9,7 @@ class HistoryCommand(Command):
     def description(self):
         return 'History menu'
 
-    def execute(self, commands_list):
-
+    def execute(self, commands_list, local_history):
         try:
             data_dir = './history'
             if not os.path.exists(data_dir):
@@ -22,32 +22,70 @@ class HistoryCommand(Command):
         except:
             logging.error(f"Error initializing history feature")
 
-
-        print("\n---------------\nHistory menu (type 'cancel' for main menu)\n")
-        print("show - Show calculations history\nclear - Clear current calculations history\nload - Load calculations history from storage\nsave - Save calculations history to storage\ndelete - Clear calculations history storage\n")
+        print("\n---------------\nHistory menu (type 'main' for main menu, 'exit' to exit)\n")
+        print("show - Show calculations history\nclear - Clear current calculations history\nload - Load calculations history from storage\nsave - Save calculations history to storage\ndelete - Clear calculations history storage\n---------------\n")
         isWorking = True
         while isWorking:  #REPL Read, Evaluate, Print, Loop
             input_command = input("HISTORY MENU >>> ").strip()
-            if input_command == 'cancel':
+            if input_command == 'main':
+                print('')
                 isWorking = False
-            try:
-                print(f"{input_command}")
-                getattr(self, input_command)()
-                isWorking = False
-            except:
-                print(f"\n---------------\nNo such command: {input_command}\n---------------\n")
+                return
+
+            if input_command == 'exit':
+                logging.info('Exiting app')
+                sys.exit("Exiting...")
+
+            print(f"{input_command}")
+            getattr(self, input_command)(local_history, data_dir)
+            # try:
+            # except:
+            #     print(f"\n---------------\nNo such command: {input_command}\n---------------\n")
     
-    def show(self):
+    def show(self, local_history, data_dir):
+        if len(local_history) == 0:
+            print("\n---------------\nLocal history is empty\n---------------\n")
+            return
+        print("\n---------------\nLocal history:")
+        for record in local_history:
+            print(self.record_string(record))
+        print("---------------\n")
         return
     
-    def clear(self):
+    def clear(self, local_history, data_dir):
+        local_history.clear()
+        print("\n---------------\nLocal history has been succesfully cleared\n---------------\n")
         return
     
-    def load(self):
+    def load(self, local_history, data_dir):
+        read_history = None
+        try:
+            local_history.clear()
+            csv_file_path = os.path.join(data_dir, 'history.csv')
+            read_history = pd.read_csv(csv_file_path)
+        except:
+            print("\n---------------\nNo stored history file available\n---------------\n")
+            return
+        
+        for index, row in read_history.iterrows():
+            historyRecord = {
+                'index': index,
+                'operation': row['Operation'],
+                'arg_a': row['Argument A'],
+                'arg_b': row['Argument B'],
+                'result': row['Result']
+            }
+            local_history.append(historyRecord)
+
+        print("\n---------------\nStored history has been succesfully loaded\n---------------")
+        self.show(local_history, data_dir)
         return
     
-    def save(self):
+    def save(self, local_history, data_dir):
         return
     
-    def delete(self):
+    def delete(self, local_history, data_dir):
         return
+
+    def record_string(self, record):
+        return f"#{record['index']} | Operation: {record['operation']}; A: {record['arg_a']}, B: {record['arg_b']}; Result - {record['result']}"

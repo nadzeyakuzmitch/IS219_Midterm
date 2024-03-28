@@ -7,7 +7,7 @@ class SubtractCommand(Command):
     def description(self):
         return 'Subtraction operation'
 
-    def execute(self, commands_list):
+    def execute(self, commands_list, local_history):
         print("\n---------------\nSubtraction operation (type 'stop' for main menu)\n")
         isWorking = True
         while isWorking:  #REPL Read, Evaluate, Print, Loop
@@ -26,6 +26,7 @@ class SubtractCommand(Command):
                 print(f"Result is:\na - b = {a} - {b} = {result}\n---------------\n")
                 logging.info(f'Operation result: {result}')
                 isWorking = False
+                add_to_history(a, b, result, local_history)
             except Exception as e: # Catch-all for unexpected errors
                 print(f"An error occurred: {e}\n---------------\n")
                 logging.error(f"Error while executing command: {e}")
@@ -33,3 +34,13 @@ class SubtractCommand(Command):
 
 def subtract(a: Decimal, b: Decimal) -> Decimal:
     return a - b
+
+def add_to_history(a, b, result, local_history):
+    local_history.append({
+        'index': len(local_history),
+        'operation': 'subtract',
+        'arg_a': a,
+        'arg_b': b,
+        'result': result
+    })
+    return
