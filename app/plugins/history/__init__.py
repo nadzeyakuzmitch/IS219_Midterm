@@ -82,10 +82,20 @@ class HistoryCommand(Command):
         return
     
     def save(self, local_history, data_dir):
+        df = pd.DataFrame([self.record_to_dict(item) for item in local_history])
+        csv_file_path = os.path.join(data_dir, 'history.csv')
+        df.to_csv(csv_file_path, index=False)
+        print("\n---------------\nLocal history data has been succesfully stored\n---------------\n")
         return
     
     def delete(self, local_history, data_dir):
+        csv_file_path = os.path.join(data_dir, 'history.csv')
+        os.remove(csv_file_path)
+        print("\n---------------\nStored history data has been succesfully removed\n---------------\n")
         return
 
     def record_string(self, record):
         return f"#{record['index']} | Operation: {record['operation']}; A: {record['arg_a']}, B: {record['arg_b']}; Result - {record['result']}"
+    
+    def record_to_dict(self, record):
+        return {'Operation':record['operation'], 'Argument A': record['arg_a'], 'Argument B': record['arg_b'], 'Result': record['result']}
