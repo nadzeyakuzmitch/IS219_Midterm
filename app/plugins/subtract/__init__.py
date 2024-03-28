@@ -36,6 +36,7 @@ def subtract(a: Decimal, b: Decimal) -> Decimal:
     return a - b
 
 def add_to_history(a, b, result, local_history):
+    logging.info(f'Added to history: {a} {b} {result}')
     local_history.append({
         'index': len(local_history),
         'operation': 'subtract',

@@ -10,7 +10,7 @@ class AddCommand(Command):
     def execute(self, commands_list, local_history):
         print("\n---------------\nAddition operation (type 'stop' for main menu)\n")
         isWorking = True
-        while isWorking:  #REPL Read, Evaluate, Print, Loop
+        while isWorking:
             a = input("Enter A:\n>>> ").strip()
             if a == 'stop':
                 print("Operation cancelled\n---------------\n")
@@ -27,7 +27,7 @@ class AddCommand(Command):
                 logging.info(f'Operation result: {result}')
                 isWorking = False
                 add_to_history(a, b, result, local_history)
-            except Exception as e: # Catch-all for unexpected errors
+            except Exception as e:
                 print(f"An error occurred: {e}\n---------------\n")
                 logging.error(f"Error while executing command: {e}")
                 isWorking = False
@@ -36,6 +36,7 @@ def add(a: Decimal, b: Decimal) -> Decimal:
     return a + b
 
 def add_to_history(a, b, result, local_history):
+    logging.info(f'Added to history: {a} {b} {result}')
     local_history.append({
         'index': len(local_history),
         'operation': 'add',
