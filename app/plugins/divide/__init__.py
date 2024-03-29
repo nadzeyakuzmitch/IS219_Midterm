@@ -4,7 +4,7 @@ from app.commands import Command
 
 
 class DivideCommand(Command):
-    def description(self):
+    def description(self): # Simple factory pattern: initializing command description with the class initialization
         return 'Division operation'
 
     def execute(self, commands_list, local_history):
@@ -37,6 +37,7 @@ def divide(a: Decimal, b: Decimal) -> Decimal:
         raise ValueError("Cannot divide by zero")
     return a / b
 
+"""Adding operation to the global history list"""
 def add_to_history(a, b, result, local_history):
     logging.info(f'Added to history: {a} {b} {result}')
     local_history.append({

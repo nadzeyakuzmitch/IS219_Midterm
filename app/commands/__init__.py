@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 class Command(ABC):
+    """Added description property to use it in menu functionality"""
     @abstractmethod
     def description(self):
         pass
@@ -17,15 +18,10 @@ class CommandHandler:
         self.commands[command_name] = command
 
     def execute_command(self, command_name: str, local_history):
-        """ Look before you leap (LBYL) - Use when its less likely to work
-        if command_name in self.commands:
-            self.commands[command_name].execute()
-        else:
-            print(f"No such command: {command_name}")
-        """
-        """Easier to ask for forgiveness than permission (EAFP) - Use when its going to most likely work"""
+        """Try Catch block tohandle unknown commands (LBYL)"""
         try:
             print(f"{command_name}")
+            """Main central commands execution code, passes history down for modification"""
             self.commands[command_name].execute(self.commands, local_history)
         except KeyError:
             print(f"\n---------------\nNo such command: {command_name}\n---------------\n")

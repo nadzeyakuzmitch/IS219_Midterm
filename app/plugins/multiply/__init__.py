@@ -4,7 +4,7 @@ from app.commands import Command
 
 
 class MultiplyCommand(Command):
-    def description(self):
+    def description(self): # Simple factory pattern: initializing command description with the class initialization
         return 'Multiplication operation'
 
     def execute(self, commands_list, local_history):
@@ -35,6 +35,7 @@ class MultiplyCommand(Command):
 def multiply(a: Decimal, b: Decimal) -> Decimal:
     return a * b
 
+"""Adding operation to the global history list"""
 def add_to_history(a, b, result, local_history):
     logging.info(f'Added to history: {a} {b} {result}')
     local_history.append({

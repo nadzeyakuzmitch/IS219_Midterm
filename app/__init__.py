@@ -13,12 +13,12 @@ class App:
         self.configure_logging()
         load_dotenv()
         self.settings = self.load_environment_variables()
-        self.settings.setdefault('ENVIRONMENT', 'PRODUCTION')
+        self.settings.setdefault('ENVIRONMENT', 'PRODUCTION') # Reading ENV variable for enviroment type
         logging.info(f'Environment: {self.get_environment_variable()}')
         self.command_handler = CommandHandler()
-        self.local_history = []
+        self.local_history = [] # Initializing apps history
 
-    def configure_logging(self):
+    def configure_logging(self): # Basic logging configuration
         logging_conf_path = 'logging.conf'
         if os.path.exists(logging_conf_path):
             logging.config.fileConfig(logging_conf_path, disable_existing_loggers=False)
@@ -26,12 +26,12 @@ class App:
             logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
         logging.info("Logging configured.")
 
-    def load_environment_variables(self):
+    def load_environment_variables(self): # Helper funciton to load ENV variables
         settings = {key: value for key, value in os.environ.items()}
         logging.info(f'Environment variables loaded.')
         return settings
 
-    def get_environment_variable(self, env_var: str = 'ENVIRONMENT'):
+    def get_environment_variable(self, env_var: str = 'ENVIRONMENT'): # Helper function to actually retrieve ENV variables
         return self.settings.get(env_var, None)
 
     def load_plugins(self):
@@ -52,7 +52,7 @@ class App:
         # Register commands here
         self.load_plugins()
         while True:  #REPL Read, Evaluate, Print, Loop
-            self.command_handler.execute_command(input(f'Type operation command or type `menu` for available commands (type `exit` to exit):\n{self.get_environment_variable()} >>> ').strip(), self.local_history)
+            self.command_handler.execute_command(input(f'Type operation command or type `menu` for available commands (type `exit` to exit):\n{self.get_environment_variable()} >>> ').strip(), self.local_history) # Passing history storage down to commands
 
 
 
